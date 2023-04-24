@@ -48,6 +48,19 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    - name: Deploy
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install aws-cli
       run: |
-        echo "Deploying!"
+        python -m pip install --upgrade pip
+        pip install awscli
+    - name: Deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        FUNCTION_NAME: ${{ variables.FUNCTION_NAME }}
+      run: |
+        zip deployment.zip lambda_function.py
+        aws lambda update-function-code --function-name $FUNCTION_NAME --zip-file fileb://deployment.zip
