@@ -63,4 +63,4 @@ jobs:
         FUNCTION_NAME: ${{ vars.FUNCTION_NAME }}
       run: |
         zip deployment.zip lambda_function.py
-        aws lambda update-function-code --function-name $FUNCTION_NAME --zip-file fileb://deployment.zip
+        aws lambda update-function-code --function-name $FUNCTION_NAME --zip-file fileb://deployment.zip --region us-east-1
